@@ -1,0 +1,34 @@
+[versions]
+aws-sdk = { strictly = "2.42.20" }
+awsjavakit = { strictly = "0.31.0" }
+cucumber = { strictly = "7.34.3" }
+kotest = { strictly = "6.1.9" }
+junit-jupiter = { strictly = "6.0.1" }
+junit-platform = { strictly = "6.0.1" }
+mockk = { strictly = "1.14.9" }
+
+[libraries]
+
+aws-sdk-sts = { group = "software.amazon.awssdk", name = "sts", version.ref = "aws-sdk" }
+
+
+awsjavakit-attempt = { group = "io.github.awsjavakit", name = "attempt", version.ref = "awsjavakit" }
+
+
+awsjavakit-testingutils = { group = "io.github.awsjavakit", name = "testingutils", version.ref = "awsjavakit" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit-platform" }
+junit-platform-suite = { group = "org.junit.platform", name = "junit-platform-suite", version.ref = "junit-platform" }
+
+
+cucumber-java = { group = "io.cucumber", name = "cucumber-java", version.ref = "cucumber" }
+cucumber-junit-platform-engine = { group = "io.cucumber", name = "cucumber-junit-platform-engine", version.ref = "cucumber" }
+cucumber-picocontainer = { group = "io.cucumber", name = "cucumber-picocontainer", version.ref = "cucumber" }
+kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+[bundles]
+tests = ["kotest-assertions", "kotest-runner-junit5", "junit-jupiter", "junit-platform-launcher",
+    "junit-platform-suite", "cucumber-java", "cucumber-junit-platform-engine", "cucumber-picocontainer", "mockk", "awsjavakit-testingutils"]
+
+

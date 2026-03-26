@@ -1,16 +1,17 @@
+import com.diffplug.spotless.java.RemoveUnusedImportsStep
+
 plugins {
-    java
-    jacoco
-    pmd
-    checkstyle
-    id("com.github.spotbugs")
+    kotlin("jvm")
+    id("jacoco")
+    id("io.gitlab.arturbosch.detekt")
     id("com.diffplug.spotless")
+    id("io.kotest")
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+val libs = the<org.gradle.api.artifacts.VersionCatalogsExtension>().named("libs")
+
+kotlin {
+    jvmToolchain(21)
 }
 
 repositories {
@@ -18,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(libs.findLibrary("junit-jupiter").get())
+    testRuntimeOnly(libs.findLibrary("junit-platform-launcher").get())
 }
 
 tasks.test {
@@ -29,7 +30,7 @@ tasks.test {
 
 // JaCoCo
 jacoco {
-    toolVersion = "0.8.12"
+    toolVersion = "0.8.14"
 }
 
 tasks.jacocoTestReport {
@@ -61,28 +62,18 @@ tasks.check {
     dependsOn(tasks.jacocoTestCoverageVerification)
 }
 
-// Checkstyle
-checkstyle {
-    toolVersion = "10.21.1"
-    configFile = rootProject.file("gradle-plugin-config/checkstyle.xml")
-}
-
-// PMD
-pmd {
-    toolVersion = "7.9.0"
-    ruleSetFiles = files(rootProject.file("gradle-plugin-config/pmd-ruleset.xml"))
-    ruleSets = listOf()
-}
-
-// SpotBugs
-spotbugs {
-    excludeFilter = rootProject.file("gradle-plugin-config/spotbugs-exclude.xml")
+// Detekt
+detekt {
+    config.setFrom(rootProject.file("gradle-plugin-config/detekt.yml"))
+    buildUponDefaultConfig = true
 }
 
 // Spotless
 spotless {
-    java {
-        googleJavaFormat()
-        removeUnusedImports()
+    kotlin {
+        ktlint()
     }
+
+
 }
+
