@@ -1,6 +1,6 @@
 [versions]
 aws-sdk = { strictly = "2.42.20" }
-awsjavakit = { strictly = "0.31.0" }
+awsjavakit = { strictly = "0.32.0" }
 cucumber = { strictly = "7.34.3" }
 kotest = { strictly = "6.1.9" }
 junit-jupiter = { strictly = "6.0.1" }
@@ -13,6 +13,7 @@ aws-sdk-sts = { group = "software.amazon.awssdk", name = "sts", version.ref = "a
 
 
 awsjavakit-attempt = { group = "io.github.awsjavakit", name = "attempt", version.ref = "awsjavakit" }
+awsjavakit-misc = { group = "io.github.awsjavakit", name = "misc", version.ref = "awsjavakit" }
 
 
 awsjavakit-testingutils = { group = "io.github.awsjavakit", name = "testingutils", version.ref = "awsjavakit" }
