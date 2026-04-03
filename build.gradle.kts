@@ -1,1 +1,3 @@
-// Plugin versions and common config are in buildSrc/src/main/kotlin/kotlin-conventions.gradle.kts
+plugins {
+    id("root-conventions")
+}
