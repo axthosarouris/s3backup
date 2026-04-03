@@ -1,11 +1,17 @@
 
 .DEFAULT_GOAL := build
 
-.PHONY: build
+.PHONY: build local-build
+
+ifeq ($(OS),Windows_NT)
+    GRADLEW := gradlew.bat
+else
+    GRADLEW := ./gradlew
+endif
 
 local-build:
-	./gradlew spotlessApply
-	./gradlew build
+	$(GRADLEW) spotlessApply
+	$(GRADLEW) build
 
 build:
-	./gradlew build
+	$(GRADLEW) build
