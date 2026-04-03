@@ -11,30 +11,28 @@ import software.amazon.awssdk.services.sts.model.GetCallerIdentityRequest
 import software.amazon.awssdk.services.sts.model.GetCallerIdentityResponse
 
 class AwsIdentityTest {
-    private lateinit var stsClient: StsClient
+  private lateinit var stsClient: StsClient
 
-    @BeforeEach
-    fun init() {
-        this.stsClient = mockStsClient()
-    }
+  @BeforeEach
+  fun init() {
+    this.stsClient = mockStsClient()
+  }
 
-    @Test
-    fun shouldReturnTrueWhenUserIsLoggedIn() {
-        val awsIdentity = AwsIdentity(stsClient)
-        awsIdentity.isLoggedIn() shouldBe true
-    }
+  @Test
+  fun shouldReturnTrueWhenUserIsLoggedIn() {
+    val awsIdentity = AwsIdentity(stsClient)
+    awsIdentity.isLoggedIn() shouldBe true
+  }
 
-    private fun mockStsClient(): StsClient {
-        val stsClient = mockk<StsClient>()
-        val mockResponse =
-            GetCallerIdentityResponse
-                .builder()
-                .account(randomString())
-                .arn(randomString())
-                .userId(randomString())
-                .build()
-        every { stsClient.getCallerIdentity(any<GetCallerIdentityRequest>()) }
-            .returns(mockResponse)
-        return stsClient
-    }
+  private fun mockStsClient(): StsClient {
+    val stsClient = mockk<StsClient>()
+    val mockResponse =
+        GetCallerIdentityResponse.builder()
+            .account(randomString())
+            .arn(randomString())
+            .userId(randomString())
+            .build()
+    every { stsClient.getCallerIdentity(any<GetCallerIdentityRequest>()) }.returns(mockResponse)
+    return stsClient
+  }
 }

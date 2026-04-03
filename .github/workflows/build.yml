@@ -17,4 +17,10 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java-version }}
-      - run: make build
+
+      - name: Install make (Windows)
+        if: runner.os == 'Windows'
+        run: choco install make
+
+      - name: Check that the code builds
+        run: make build

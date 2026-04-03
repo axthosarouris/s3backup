@@ -1,5 +1,3 @@
-import com.diffplug.spotless.java.RemoveUnusedImportsStep
-
 plugins {
     kotlin("jvm")
     id("jacoco")
@@ -70,10 +68,12 @@ detekt {
 
 // Spotless
 spotless {
+
     kotlin {
         ktlint()
+        ktfmt()
+        endWithNewline()
     }
-
 
 }
 
