@@ -1,0 +1,24 @@
+build:
+  maxIssues: 0
+
+complexity:
+  active: true
+
+exceptions:
+  active: true
+
+naming:
+  active: true
+
+performance:
+  active: true
+
+potential-bugs:
+  active: true
+
+style:
+  active: true
+  MagicNumber:
+    active: false
+  FunctionOnlyReturningConstant:
+    active: false

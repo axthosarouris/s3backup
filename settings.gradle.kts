@@ -1,3 +1,3 @@
-rootProject.name = "s3backup"
+    rootProject.name = "s3backup"
 include("app")
-include("client")
+include("local-file-listing")
