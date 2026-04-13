@@ -1,25 +1,27 @@
 package com.example.localfilelisting
 
+import com.example.localfilelisting.UnixPathUtils.toUnixPath
+import com.github.awsjavakit.misc.paths.UnixPath
 import java.nio.file.Files
 import java.nio.file.Path
 
 interface FileSystem {
-  fun list(folder: Path): List<Path>
+  fun list(folder: Path): List<UnixPath>
 
-  fun listRecursively(folder: Path): List<Path>
+  fun listRecursively(folder: Path): List<UnixPath>
 }
 
 class LocalFileSystem : FileSystem {
-  override fun list(folder: Path): List<Path> {
+  override fun list(folder: Path): List<UnixPath> {
     val absoluteFolder = folder.toAbsolutePath()
     validateInput(absoluteFolder)
-    return Files.list(folder).filter { !Files.isSymbolicLink(it) }.toList()
+    return Files.list(folder).filter { !Files.isSymbolicLink(it) }.map { toUnixPath(it) }.toList()
   }
 
-  override fun listRecursively(folder: Path): List<Path> {
+  override fun listRecursively(folder: Path): List<UnixPath> {
     val absoluteFolder = folder.toAbsolutePath()
     validateInput(absoluteFolder)
-    return allFilesListedRecursively(absoluteFolder)
+    return allFilesListedRecursively(absoluteFolder).map { toUnixPath(it) }
   }
 
   private fun validateInput(absoluteFolder: Path) {

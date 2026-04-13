@@ -1,5 +1,6 @@
 package com.example.localfilelisting
 
+import com.example.localfilelisting.UnixPathUtils.toUnixPath
 import com.github.awsjavakit.testingutils.RandomDataGenerator.randomString
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
@@ -21,8 +22,8 @@ class FileSystemTest {
     val file2 = Files.createFile(folder.resolve("file2.txt"))
 
     val result = LocalFileSystem().list(folder)
-
-    result shouldContainExactlyInAnyOrder listOf(file1, file2)
+    val expectedResult = listOf(file1, file2).map { toUnixPath(it) }
+    result shouldContainExactlyInAnyOrder expectedResult
   }
 
   @Test
@@ -41,7 +42,7 @@ class FileSystemTest {
     val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
     val fileInFolder = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().list(folder)
-    result shouldContainExactlyInAnyOrder listOf(nestedFolder, fileInFolder)
+    result shouldContainExactlyInAnyOrder listOf(nestedFolder, fileInFolder).map { toUnixPath(it) }
     fileInNestedFolder shouldNotBeIn result
   }
 
@@ -69,7 +70,7 @@ class FileSystemTest {
     val realFile = createFileWithSomeContent(folder.resolve(randomString()))
     val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
     val result = LocalFileSystem().list(folder)
-    result shouldContainExactlyInAnyOrder listOf(realFile)
+    result shouldContainExactlyInAnyOrder listOf(toUnixPath(realFile))
     symlink shouldNotBeIn result
   }
 
@@ -81,7 +82,7 @@ class FileSystemTest {
     val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
     val fileB = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().listRecursively(folder)
-    result shouldContainExactlyInAnyOrder listOf(fileInNestedFolder, fileB)
+    result shouldContainExactlyInAnyOrder listOf(fileInNestedFolder, fileB).map { toUnixPath(it) }
   }
 
   @Test
@@ -91,7 +92,7 @@ class FileSystemTest {
     val realFile = createFileWithSomeContent(folder.resolve(randomString()))
     val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
     val result = LocalFileSystem().listRecursively(folder)
-    result shouldContainExactlyInAnyOrder listOf(realFile)
+    result shouldContainExactlyInAnyOrder listOf(realFile).map { toUnixPath(it) }
     symlink shouldNotBeIn result
   }
 
