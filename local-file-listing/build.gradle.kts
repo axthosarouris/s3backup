@@ -5,5 +5,6 @@ plugins {
 dependencies {
     implementation(libs.awsjavakit.misc)
     testImplementation(libs.bundles.tests)
+    testImplementation(libs.jimfs)
 
 }
