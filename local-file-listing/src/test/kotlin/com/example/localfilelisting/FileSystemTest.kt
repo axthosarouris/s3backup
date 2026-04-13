@@ -42,8 +42,13 @@ class FileSystemTest {
     val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
     val fileInFolder = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().list(folder)
-    result shouldContainExactlyInAnyOrder listOf(nestedFolder, fileInFolder).map { toUnixPath(it) }
-    fileInNestedFolder shouldNotBeIn result
+    result shouldContainExactlyInAnyOrder
+        listOf(
+                nestedFolder,
+                fileInFolder,
+            )
+            .map { toUnixPath(it) }
+    toUnixPath(fileInNestedFolder) shouldNotBeIn result
   }
 
   @Test
@@ -71,7 +76,7 @@ class FileSystemTest {
     val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
     val result = LocalFileSystem().list(folder)
     result shouldContainExactlyInAnyOrder listOf(toUnixPath(realFile))
-    symlink shouldNotBeIn result
+    toUnixPath(symlink) shouldNotBeIn result
   }
 
   @Test
@@ -82,7 +87,12 @@ class FileSystemTest {
     val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
     val fileB = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().listRecursively(folder)
-    result shouldContainExactlyInAnyOrder listOf(fileInNestedFolder, fileB).map { toUnixPath(it) }
+    result shouldContainExactlyInAnyOrder
+        listOf(
+                fileInNestedFolder,
+                fileB,
+            )
+            .map { toUnixPath(it) }
   }
 
   @Test
@@ -93,7 +103,7 @@ class FileSystemTest {
     val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
     val result = LocalFileSystem().listRecursively(folder)
     result shouldContainExactlyInAnyOrder listOf(realFile).map { toUnixPath(it) }
-    symlink shouldNotBeIn result
+    toUnixPath(symlink) shouldNotBeIn result
   }
 
   private fun createFileWithSomeContent(path: Path): Path {

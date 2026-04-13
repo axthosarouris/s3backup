@@ -15,7 +15,9 @@ class LocalFileSystem : FileSystem {
   override fun list(folder: Path): List<UnixPath> {
     val absoluteFolder = folder.toAbsolutePath()
     validateInput(absoluteFolder)
-    return Files.list(folder).filter { !Files.isSymbolicLink(it) }.map { toUnixPath(it) }.toList()
+    return Files.list(folder).use { stream ->
+      stream.filter { !Files.isSymbolicLink(it) }.map { toUnixPath(it) }.toList()
+    }
   }
 
   override fun listRecursively(folder: Path): List<UnixPath> {
