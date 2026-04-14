@@ -8,7 +8,7 @@ private const val WINDOWS_PATH_DELIMITER = "\\"
 object UnixPathUtils {
   @Suppress("SpreadOperator", "ReturnCount")
   fun toUnixPath(path: Path): UnixPath {
-    val relativePath = UnixPath.of(*toArray(path))
+    val relativePath = UnixPath.of(*toArray(path)).removeRoot()
     if (path.isAbsolute && osIsWindows(path)) {
       val root = path.root.toString().replace(WINDOWS_PATH_DELIMITER, "")
       return UnixPath.of(root).addChild(relativePath)

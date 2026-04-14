@@ -10,6 +10,7 @@ import java.nio.file.Path
 import org.junit.jupiter.api.Test
 
 class UnixPathUtilsTest {
+  
   @Test
   fun shouldTransformAbsoluteUnixPathAndBackToTheSamePath() {
     val fileSystem: FileSystem = Jimfs.newFileSystem(Configuration.unix())
