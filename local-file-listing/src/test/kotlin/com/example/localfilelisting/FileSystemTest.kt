@@ -1,8 +1,10 @@
 package com.example.localfilelisting
 
+import com.example.localfilelisting.UnixPathUtils.toUnixPath
 import com.github.awsjavakit.testingutils.RandomDataGenerator.randomString
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.collections.shouldNotBeIn
 import io.kotest.matchers.shouldBe
 import java.nio.file.Files
 import java.nio.file.Path
@@ -20,8 +22,8 @@ class FileSystemTest {
     val file2 = Files.createFile(folder.resolve("file2.txt"))
 
     val result = LocalFileSystem().list(folder)
-
-    result shouldContainExactlyInAnyOrder listOf(file1, file2)
+    val expectedResult = listOf(file1, file2).map { toUnixPath(it) }
+    result shouldContainExactlyInAnyOrder expectedResult
   }
 
   @Test
@@ -33,14 +35,20 @@ class FileSystemTest {
   }
 
   @Test
-  fun shouldTraverseAllFoldersInsideInputFolderAndListAllContainedRegularFiles(
+  fun shouldListOnlyTheFilesAndFoldersOfTheImmediatelyNextLevel(
       @TempDir folder: Path,
   ) {
     val nestedFolder = folder.resolve("nested")
-    val fileA = createFileWithSomeContent(nestedFolder.resolve(randomString()))
-    val fileB = createFileWithSomeContent(folder.resolve(randomString()))
+    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
+    val fileInFolder = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().list(folder)
-    result shouldContainExactlyInAnyOrder listOf(fileA, fileB)
+    result shouldContainExactlyInAnyOrder
+        listOf(
+                nestedFolder,
+                fileInFolder,
+            )
+            .map { toUnixPath(it) }
+    toUnixPath(fileInNestedFolder) shouldNotBeIn result
   }
 
   @Test
@@ -61,13 +69,41 @@ class FileSystemTest {
   }
 
   @Test
-  fun shouldIncludeSymlinkedFiles(
+  fun shouldNotIncludeSymlinkedFiles(
       @TempDir folder: Path,
   ) {
     val realFile = createFileWithSomeContent(folder.resolve(randomString()))
     val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
     val result = LocalFileSystem().list(folder)
-    result shouldContainExactlyInAnyOrder listOf(realFile, symlink)
+    result shouldContainExactlyInAnyOrder listOf(toUnixPath(realFile))
+    toUnixPath(symlink) shouldNotBeIn result
+  }
+
+  @Test
+  fun shouldListRecursivelyAllRegularFilesInsideAFolderExpandingTheSubfolders(
+      @TempDir folder: Path,
+  ) {
+    val nestedFolder = folder.resolve("nested")
+    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
+    val fileB = createFileWithSomeContent(folder.resolve(randomString()))
+    val result = LocalFileSystem().listRecursively(folder)
+    result shouldContainExactlyInAnyOrder
+        listOf(
+                fileInNestedFolder,
+                fileB,
+            )
+            .map { toUnixPath(it) }
+  }
+
+  @Test
+  fun shouldNotIncludeSymlinkedFilesWhenListingRecursively(
+      @TempDir folder: Path,
+  ) {
+    val realFile = createFileWithSomeContent(folder.resolve(randomString()))
+    val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
+    val result = LocalFileSystem().listRecursively(folder)
+    result shouldContainExactlyInAnyOrder listOf(realFile).map { toUnixPath(it) }
+    toUnixPath(symlink) shouldNotBeIn result
   }
 
   private fun createFileWithSomeContent(path: Path): Path {

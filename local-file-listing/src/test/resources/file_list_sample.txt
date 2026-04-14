@@ -1,0 +1,6 @@
+/rootFolder/folderWithNestedFolder/nestedFolder/fileA.txt
+/rootFolder/folderWithNestedFolder/nestedFolder/fileB.txt
+/rootFolder/folderWithSomeFiles/fileC.txt
+/rootFolder/folderWithSomeFiles/fileD.txt
+/rootFolder/folderWithSomeFiles/fileE.txt
+/rootFolder/fileF.txt
