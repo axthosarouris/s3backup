@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew build:*)",
+      "Bash(./gradlew check:*)",
+      "Bash(./gradlew test:*)",
+      "Bash(./gradlew spotlessApply:*)",
+      "Bash(./gradlew spotlessCheck:*)",
+      "Bash(make build)",
+      "Bash(make local-build)",
+      "Bash(java -version)",
+      "Bash(gradle --version)"
+    ]
+  }
+}
