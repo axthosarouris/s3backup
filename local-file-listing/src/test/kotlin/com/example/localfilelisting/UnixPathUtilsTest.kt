@@ -16,7 +16,7 @@ class UnixPathUtilsTest {
     val original = fileSystem.getPath("/home/user/file.txt")
     val unixPath = toUnixPath(original)
     unixPath.toString() shouldBe "/home/user/file.txt"
-    unixPath.toPath() shouldBe Path.of("/home/user/file.txtx")
+    unixPath.toPath() shouldBe Path.of("/home/user/file.txt")
   }
 
   @Test
