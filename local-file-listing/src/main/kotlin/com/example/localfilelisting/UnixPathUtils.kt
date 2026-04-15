@@ -19,8 +19,7 @@ object UnixPathUtils {
     return relativePath
   }
 
-  private fun osIsWindows(path: Path): Boolean =
-      path.root.toString().contains(WINDOWS_PATH_DELIMITER)
+  private fun osIsWindows(path: Path): Boolean = path.fileSystem.separator == WINDOWS_PATH_DELIMITER
 
   private fun toArray(path: Path): Array<String> =
       path.toList().map { i -> i.toString() }.toTypedArray()

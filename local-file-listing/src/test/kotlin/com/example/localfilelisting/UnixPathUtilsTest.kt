@@ -4,7 +4,6 @@ import com.example.localfilelisting.UnixPathUtils.toUnixPath
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import io.kotest.matchers.equals.shouldBeEqual
-import io.kotest.matchers.or
 import io.kotest.matchers.shouldBe
 import java.nio.file.FileSystem
 import java.nio.file.Path
