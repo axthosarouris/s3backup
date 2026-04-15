@@ -13,7 +13,6 @@ import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.condition.OS
 
 class UnixPathUtilsTest {
-
   @Test
   @DisabledOnOs(OS.WINDOWS)
   fun shouldTransformAbsoluteUnixPathAndBackToTheSamePath() {
