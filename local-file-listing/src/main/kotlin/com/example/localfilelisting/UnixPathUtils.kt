@@ -10,7 +10,6 @@ object UnixPathUtils {
   fun toUnixPath(path: Path): UnixPath {
     val relativePath = UnixPath.of(*toArray(path)).removeRoot()
     if (path.isAbsolute && osIsWindows(path)) {
-      System.out.println(path.root.toString())
       val root = path.root.toString().replace(WINDOWS_PATH_DELIMITER, "")
       return UnixPath.of(root).addChild(relativePath)
     }
