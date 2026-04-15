@@ -4,9 +4,9 @@ import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Test
 import java.nio.file.FileSystem
 import java.nio.file.Path
+import org.junit.jupiter.api.Test
 
 class UnixPathUtilsTest {
   @Test

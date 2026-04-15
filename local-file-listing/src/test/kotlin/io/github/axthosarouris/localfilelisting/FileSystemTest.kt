@@ -1,16 +1,20 @@
 package io.github.axthosarouris.localfilelisting
 
-import com.github.awsjavakit.testingutils.RandomDataGenerator
+import com.github.awsjavakit.testingutils.RandomDataGenerator.randomString
+import io.github.axthosarouris.localfilelisting.UnixPathUtils.toUnixPath
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldNotBeIn
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.io.TempDir
+import java.io.ByteArrayInputStream
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
+import kotlin.io.path.writeBytes
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.io.TempDir
 
 class FileSystemTest {
   @Test
@@ -34,20 +38,28 @@ class FileSystemTest {
   }
 
   @Test
+  fun shouldReturnFileContentsAsStreamOfArrayWhenGettingAFile(
+      @TempDir folder: Path,
+  ) {
+    val file = Files.createFile(folder.resolve(randomString()))
+    val bytes = randomBytes()
+    file.writeBytes(bytes)
+    val fs = LocalFileSystem()
+    val content = ByteArrayInputStream(bytes)
+    val actualContent = fs.readFile(toUnixPath(file))
+    actualContent.readAllBytes() shouldBe content.readAllBytes()
+  }
+
+  @Test
   fun shouldListOnlyTheFilesAndFoldersOfTheImmediatelyNextLevel(
       @TempDir folder: Path,
   ) {
     val nestedFolder = folder.resolve("nested")
-    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(RandomDataGenerator.randomString()))
-    val fileInFolder = createFileWithSomeContent(folder.resolve(RandomDataGenerator.randomString()))
+    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
+    val fileInFolder = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().list(folder)
-    result shouldContainExactlyInAnyOrder
-        listOf(
-                nestedFolder,
-                fileInFolder,
-            )
-            .map { UnixPathUtils.toUnixPath(it) }
-    UnixPathUtils.toUnixPath(fileInNestedFolder) shouldNotBeIn result
+    result shouldContainExactlyInAnyOrder listOf(nestedFolder, fileInFolder).map { toUnixPath(it) }
+    toUnixPath(fileInNestedFolder) shouldNotBeIn result
   }
 
   @Test
@@ -64,18 +76,18 @@ class FileSystemTest {
       @TempDir folder: Path,
   ) {
     val nonExistent = folder.resolve("does-not-exist")
-      assertThrows<IllegalArgumentException> { LocalFileSystem().list(nonExistent) }
+    assertThrows<IllegalArgumentException> { LocalFileSystem().list(nonExistent) }
   }
 
   @Test
   fun shouldNotIncludeSymlinkedFiles(
       @TempDir folder: Path,
   ) {
-    val realFile = createFileWithSomeContent(folder.resolve(RandomDataGenerator.randomString()))
+    val realFile = createFileWithSomeContent(folder.resolve(randomString()))
     val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
     val result = LocalFileSystem().list(folder)
-    result shouldContainExactlyInAnyOrder listOf(UnixPathUtils.toUnixPath(realFile))
-    UnixPathUtils.toUnixPath(symlink) shouldNotBeIn result
+    result shouldContainExactlyInAnyOrder listOf(toUnixPath(realFile))
+    toUnixPath(symlink) shouldNotBeIn result
   }
 
   @Test
@@ -83,31 +95,33 @@ class FileSystemTest {
       @TempDir folder: Path,
   ) {
     val nestedFolder = folder.resolve("nested")
-    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(RandomDataGenerator.randomString()))
-    val fileB = createFileWithSomeContent(folder.resolve(RandomDataGenerator.randomString()))
+    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
+    val fileB = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().listRecursively(folder)
     result shouldContainExactlyInAnyOrder
         listOf(
                 fileInNestedFolder,
                 fileB,
             )
-            .map { UnixPathUtils.toUnixPath(it) }
+            .map { toUnixPath(it) }
   }
 
   @Test
   fun shouldNotIncludeSymlinkedFilesWhenListingRecursively(
       @TempDir folder: Path,
   ) {
-    val realFile = createFileWithSomeContent(folder.resolve(RandomDataGenerator.randomString()))
+    val realFile = createFileWithSomeContent(folder.resolve(randomString()))
     val symlink = Files.createSymbolicLink(folder.resolve("link"), realFile)
     val result = LocalFileSystem().listRecursively(folder)
-    result shouldContainExactlyInAnyOrder listOf(realFile).map { UnixPathUtils.toUnixPath(it) }
-    UnixPathUtils.toUnixPath(symlink) shouldNotBeIn result
+    result shouldContainExactlyInAnyOrder listOf(realFile).map { toUnixPath(it) }
+    toUnixPath(symlink) shouldNotBeIn result
   }
+
+  private fun randomBytes(): ByteArray = randomString().toByteArray(StandardCharsets.UTF_8)
 
   private fun createFileWithSomeContent(path: Path): Path {
     path.parent?.createDirectories()
-    path.toFile().writeText(RandomDataGenerator.randomString())
+    path.toFile().writeText(randomString())
     return path
   }
 }

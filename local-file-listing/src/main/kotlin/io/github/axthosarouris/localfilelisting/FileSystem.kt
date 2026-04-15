@@ -1,6 +1,7 @@
 package io.github.axthosarouris.localfilelisting
 
 import com.github.awsjavakit.misc.paths.UnixPath
+import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -8,9 +9,13 @@ interface FileSystem {
   fun list(folder: Path): List<UnixPath>
 
   fun listRecursively(folder: Path): List<UnixPath>
+
+  fun readFile(path: UnixPath): InputStream
 }
 
 class LocalFileSystem : FileSystem {
+  override fun readFile(path: UnixPath): InputStream = Files.newInputStream(path.toPath())
+
   override fun list(folder: Path): List<UnixPath> {
     val absoluteFolder = folder.toAbsolutePath()
     validateInput(absoluteFolder)
