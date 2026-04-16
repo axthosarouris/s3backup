@@ -55,6 +55,7 @@ class FileSystemTest {
       @TempDir folder: Path,
   ) {
     val nestedFolder = folder.resolve("nested")
+
     val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(randomString()))
     val fileInFolder = createFileWithSomeContent(folder.resolve(randomString()))
     val result = LocalFileSystem().list(folder)

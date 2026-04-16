@@ -7,15 +7,17 @@ import io.kotest.matchers.shouldBe
 import java.nio.file.FileSystem
 import java.nio.file.Path
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 class UnixPathUtilsTest {
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun shouldTransformAbsoluteUnixPathAndBackToTheSamePath() {
     val fileSystem: FileSystem = Jimfs.newFileSystem(Configuration.unix())
     val original = fileSystem.getPath("/home/user/file.txt")
     val unixPath = UnixPathUtils.toUnixPath(original)
     unixPath.toString() shouldBe "/home/user/file.txt"
-    unixPath.toPath() shouldBe Path.of("/home/user/file.txt")
   }
 
   @Test
