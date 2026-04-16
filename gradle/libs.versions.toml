@@ -2,6 +2,7 @@
 aws-sdk = { strictly = "2.42.20" }
 awsjavakit = { strictly = "0.32.1" }
 cucumber = { strictly = "7.34.3" }
+jimfs = { strictly = "1.3.1" }
 kotest = { strictly = "6.1.9" }
 junit-jupiter = { strictly = "6.0.1" }
 junit-platform = { strictly = "6.0.1" }
@@ -25,6 +26,7 @@ junit-platform-suite = { group = "org.junit.platform", name = "junit-platform-su
 cucumber-java = { group = "io.cucumber", name = "cucumber-java", version.ref = "cucumber" }
 cucumber-junit-platform-engine = { group = "io.cucumber", name = "cucumber-junit-platform-engine", version.ref = "cucumber" }
 cucumber-picocontainer = { group = "io.cucumber", name = "cucumber-picocontainer", version.ref = "cucumber" }
+jimfs = { group = "com.google.jimfs", name = "jimfs", version.ref = "jimfs" }
 kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
