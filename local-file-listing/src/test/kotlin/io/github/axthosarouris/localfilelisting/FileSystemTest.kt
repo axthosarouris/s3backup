@@ -5,12 +5,12 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldNotBeIn
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.io.TempDir
 
 class FileSystemTest {
   @Test
@@ -38,7 +38,8 @@ class FileSystemTest {
       @TempDir folder: Path,
   ) {
     val nestedFolder = folder.resolve("nested")
-    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(RandomDataGenerator.randomString()))
+    val fileInNestedFolder =
+        createFileWithSomeContent(nestedFolder.resolve(RandomDataGenerator.randomString()))
     val fileInFolder = createFileWithSomeContent(folder.resolve(RandomDataGenerator.randomString()))
     val result = LocalFileSystem().list(folder)
     result shouldContainExactlyInAnyOrder
@@ -64,7 +65,7 @@ class FileSystemTest {
       @TempDir folder: Path,
   ) {
     val nonExistent = folder.resolve("does-not-exist")
-      assertThrows<IllegalArgumentException> { LocalFileSystem().list(nonExistent) }
+    assertThrows<IllegalArgumentException> { LocalFileSystem().list(nonExistent) }
   }
 
   @Test
@@ -83,7 +84,8 @@ class FileSystemTest {
       @TempDir folder: Path,
   ) {
     val nestedFolder = folder.resolve("nested")
-    val fileInNestedFolder = createFileWithSomeContent(nestedFolder.resolve(RandomDataGenerator.randomString()))
+    val fileInNestedFolder =
+        createFileWithSomeContent(nestedFolder.resolve(RandomDataGenerator.randomString()))
     val fileB = createFileWithSomeContent(folder.resolve(RandomDataGenerator.randomString()))
     val result = LocalFileSystem().listRecursively(folder)
     result shouldContainExactlyInAnyOrder
