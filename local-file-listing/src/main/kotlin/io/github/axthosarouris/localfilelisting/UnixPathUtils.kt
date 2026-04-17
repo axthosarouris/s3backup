@@ -1,4 +1,4 @@
-package com.example.localfilelisting
+package io.github.axthosarouris.localfilelisting
 
 import com.github.awsjavakit.misc.paths.UnixPath
 import java.nio.file.Path

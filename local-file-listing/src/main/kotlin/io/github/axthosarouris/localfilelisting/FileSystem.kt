@@ -1,6 +1,5 @@
-package com.example.localfilelisting
+package io.github.axthosarouris.localfilelisting
 
-import com.example.localfilelisting.UnixPathUtils.toUnixPath
 import com.github.awsjavakit.misc.paths.UnixPath
 import java.nio.file.Files
 import java.nio.file.Path
@@ -16,14 +15,14 @@ class LocalFileSystem : FileSystem {
     val absoluteFolder = folder.toAbsolutePath()
     validateInput(absoluteFolder)
     return Files.list(folder).use { stream ->
-      stream.filter { !Files.isSymbolicLink(it) }.map { toUnixPath(it) }.toList()
+      stream.filter { !Files.isSymbolicLink(it) }.map { UnixPathUtils.toUnixPath(it) }.toList()
     }
   }
 
   override fun listRecursively(folder: Path): List<UnixPath> {
     val absoluteFolder = folder.toAbsolutePath()
     validateInput(absoluteFolder)
-    return allFilesListedRecursively(absoluteFolder).map { toUnixPath(it) }
+    return allFilesListedRecursively(absoluteFolder).map { UnixPathUtils.toUnixPath(it) }
   }
 
   private fun validateInput(absoluteFolder: Path) {
