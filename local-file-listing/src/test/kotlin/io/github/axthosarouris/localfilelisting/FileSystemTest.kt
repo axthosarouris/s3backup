@@ -38,7 +38,7 @@ class FileSystemTest {
   }
 
   @Test
-  fun shouldReturnFileContentsAsStreamOfArrayWhenGettingAFile(
+  fun shouldReturnFileContentsAsStreamWhenGettingAFile(
       @TempDir folder: Path,
   ) {
     val file = Files.createFile(folder.resolve(randomString()))
