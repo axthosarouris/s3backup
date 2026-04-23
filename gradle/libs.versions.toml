@@ -7,6 +7,7 @@ kotest = { strictly = "6.1.9" }
 junit-jupiter = { strictly = "6.0.1" }
 junit-platform = { strictly = "6.0.1" }
 mockk = { strictly = "1.14.9" }
+tomlj = { strictly = "1.1.1" }
 
 [libraries]
 
@@ -30,6 +31,7 @@ jimfs = { group = "com.google.jimfs", name = "jimfs", version.ref = "jimfs" }
 kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+tomlj = { group = "org.tomlj", name = "tomlj", version.ref = "tomlj" }
 [bundles]
 tests = ["kotest-assertions", "kotest-runner-junit5", "junit-jupiter", "junit-platform-launcher",
     "junit-platform-suite", "cucumber-java", "cucumber-junit-platform-engine", "cucumber-picocontainer", "mockk", "awsjavakit-testingutils"]
