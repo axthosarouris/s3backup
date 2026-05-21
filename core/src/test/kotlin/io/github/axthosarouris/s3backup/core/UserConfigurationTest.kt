@@ -13,7 +13,9 @@ class UserConfigurationTest :
       context("userConfiguration reads valid user configuration") {
         test("should read valid toml file ") {
           val config =
-              UserConfiguration.fromFile(RESOURCES_PATH.resolve("valid_config.toml").toAbsolutePath())
+              UserConfiguration.fromFile(
+                  RESOURCES_PATH.resolve("valid_config.toml").toAbsolutePath(),
+              )
 
           config.folderList shouldContainExactlyInAnyOrder
               listOf(
