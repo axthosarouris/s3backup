@@ -11,7 +11,7 @@ private val RESOURCES_PATH = Path.of("src", "test", "resources")
 class UserConfigurationTest :
     FunSpec({
       context("userConfiguration reads valid user configuration") {
-        test("should read valid toml file ") {
+        test("should read valid toml file") {
           val config =
               UserConfiguration.fromFile(
                   RESOURCES_PATH.resolve("valid_config.toml").toAbsolutePath(),
