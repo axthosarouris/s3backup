@@ -17,7 +17,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation(libs.findLibrary("junit-jupiter").get())
+    testImplementation(libs.findLibrary("kotest-runner-junit5").get())
+    testImplementation(libs.findLibrary("kotest-assertions").get())
     testRuntimeOnly(libs.findLibrary("junit-platform-launcher").get())
 }
 
