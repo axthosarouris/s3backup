@@ -19,17 +19,17 @@ class UserConfigurationTest :
 
           config.folderList shouldContainExactlyInAnyOrder
               listOf(
-                  Path.of("/a/b/c/d/e"),
-                  Path.of("/some/other/folder"),
+                  "/a/b/c/d/e",
+                  "/some/other/folder",
               )
         }
 
-        test("should throw when configuration is missing the folders entry") {
+        test("should throw Exception when configuration is missing the folders entry") {
           val inputFile = """[core]""".trimIndent()
           shouldThrow<InvalidConfigurationException> { UserConfiguration.parse(inputFile) }
         }
 
-        test("should throw when configuration is invalid toml") {
+        test("should throw Exception when configuration is invalid toml") {
           val inputFile =
               """
               |[core
