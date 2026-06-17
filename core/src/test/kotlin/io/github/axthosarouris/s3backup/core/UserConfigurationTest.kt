@@ -24,12 +24,12 @@ class UserConfigurationTest :
               )
         }
 
-        test("should throw when configuration is missing the folders entry") {
+        test("should throw Exception when configuration is missing the folders entry") {
           val inputFile = """[core]""".trimIndent()
           shouldThrow<InvalidConfigurationException> { UserConfiguration.parse(inputFile) }
         }
 
-        test("should throw when configuration is invalid toml") {
+        test("should throw Exception when configuration is invalid toml") {
           val inputFile =
               """
               |[core
