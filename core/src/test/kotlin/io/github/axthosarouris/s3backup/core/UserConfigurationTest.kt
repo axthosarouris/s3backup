@@ -19,8 +19,8 @@ class UserConfigurationTest :
 
           config.folderList shouldContainExactlyInAnyOrder
               listOf(
-                  Path.of("/a/b/c/d/e"),
-                  Path.of("/some/other/folder"),
+                  "/a/b/c/d/e",
+                  "/some/other/folder",
               )
         }
 

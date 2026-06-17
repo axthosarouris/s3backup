@@ -11,9 +11,7 @@ class Application(
   fun runApp() {
     val config = UserConfiguration.fromFile(configLocation)
     for (entry in config.folderList) {
-      if (logger.isInfoEnabled) {
-        logger.info(entry.toString())
-      }
+      logger.info("{}", entry)
     }
   }
 }

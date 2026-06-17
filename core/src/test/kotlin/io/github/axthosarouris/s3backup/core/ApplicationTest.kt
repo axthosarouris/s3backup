@@ -10,7 +10,7 @@ private val RESOURCES_PATH = Path.of("src", "test", "resources")
 class ApplicationTest :
     FunSpec({
       context("Application expects user configuration") {
-        test("should read UserConfiguration from default location") {
+        test("should read UserConfiguration from provided location") {
           val defaultConfigLocation = RESOURCES_PATH.resolve("valid_config.toml")
           val logger = LogUtils.getTestingAppender(Application::class.java)
           val application = Application(configLocation = defaultConfigLocation)

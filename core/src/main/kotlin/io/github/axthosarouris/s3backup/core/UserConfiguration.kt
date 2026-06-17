@@ -7,7 +7,7 @@ import org.tomlj.TomlArray
 import org.tomlj.TomlParseResult
 
 class UserConfiguration(
-    val folderList: List<Path>,
+    val folderList: List<String>,
 ) {
   companion object {
     private const val FOLDERS_KEY = "core.folders"
@@ -16,7 +16,7 @@ class UserConfiguration(
 
     fun parse(input: String): UserConfiguration {
       val parsed = Toml.parse(input).also(::failOnParseErrors)
-      return UserConfiguration(parsed.requireFolders().asPathList())
+      return UserConfiguration(parsed.requireFolders().asStringList())
     }
 
     private fun failOnParseErrors(result: TomlParseResult) {
@@ -28,6 +28,6 @@ class UserConfiguration(
     private fun TomlParseResult.requireFolders(): TomlArray =
         getArray(FOLDERS_KEY) ?: throw InvalidConfigurationException("Missing '$FOLDERS_KEY'")
 
-    private fun TomlArray.asPathList(): List<Path> = List(size()) { Path.of(getString(it)) }
+    private fun TomlArray.asStringList(): List<String> = List(size(), { getString(it) })
   }
 }
