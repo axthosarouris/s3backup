@@ -27,6 +27,7 @@ class Application(
       logger.info("{}", entry)
     }
     userConfig.folderList
+        .asSequence()
         .map(Path::of)
         .flatMap({ path -> fileSystem.listRecursively(path) })
         .forEach { logger.info("{}", it) }
