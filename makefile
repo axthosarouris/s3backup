@@ -9,6 +9,8 @@ else
     GRADLEW := ./gradlew
 endif
 
+spotless:
+	$(GRADLEW) spotlessApply
 local-build:
 	$(GRADLEW) spotlessApply
 	$(GRADLEW) build
