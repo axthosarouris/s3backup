@@ -11,6 +11,10 @@ interface FileSystem {
   fun listRecursively(folder: Path): List<UnixPath>
 
   fun readFile(path: UnixPath): InputStream
+
+  companion object {
+    fun local(): FileSystem = LocalFileSystem()
+  }
 }
 
 class LocalFileSystem : FileSystem {

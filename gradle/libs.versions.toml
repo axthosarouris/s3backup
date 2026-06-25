@@ -2,6 +2,7 @@
 aws-sdk = { strictly = "2.42.20" }
 awsjavakit = { strictly = "0.32.1" }
 cucumber = { strictly = "7.34.3" }
+hamcrest = { strictly = "3.0" }
 jimfs = { strictly = "1.3.1" }
 kotest = { strictly = "6.1.9" }
 junit-jupiter = { strictly = "6.0.1" }
@@ -34,6 +35,7 @@ jimfs = { group = "com.google.jimfs", name = "jimfs", version.ref = "jimfs" }
 kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 
+hamcrest = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 log4j-api = { group = "org.apache.logging.log4j", name = "log4j-api", version.ref = "log4j" }
@@ -46,7 +48,7 @@ tomlj = { group = "org.tomlj", name = "tomlj", version.ref = "tomlj" }
 logging = ["slf4j-api", "log4j-api", "log4j-core", "log4j-slf4j2-impl"]
 tests = ["kotest-assertions", "kotest-runner-junit5", "junit-jupiter", "junit-platform-launcher",
     "junit-platform-suite", "cucumber-java", "cucumber-junit-platform-engine",
-    "cucumber-picocontainer", "mockk", "awsjavakit-testingutils","awsjavakit-logutils"]
+    "cucumber-picocontainer", "mockk", "awsjavakit-testingutils","awsjavakit-logutils", "hamcrest"]
 
 
 

@@ -6,6 +6,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldNotBeIn
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.instanceOf
 import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -25,7 +26,7 @@ class FileSystemTest {
     val file2 = Files.createFile(folder.resolve("file2.txt"))
 
     val result = LocalFileSystem().list(folder)
-    val expectedResult = listOf(file1, file2).map { UnixPathUtils.toUnixPath(it) }
+    val expectedResult = listOf(file1, file2).map { toUnixPath(it) }
     result shouldContainExactlyInAnyOrder expectedResult
   }
 
@@ -116,6 +117,11 @@ class FileSystemTest {
     val result = LocalFileSystem().listRecursively(folder)
     result shouldContainExactlyInAnyOrder listOf(realFile).map { toUnixPath(it) }
     toUnixPath(symlink) shouldNotBeIn result
+  }
+
+  @Test
+  fun shouldProvideFunctionsForBasicImplementationsOfTheInterface() {
+    FileSystem.local() shouldBe instanceOf<LocalFileSystem>()
   }
 
   private fun randomBytes(): ByteArray = randomString().toByteArray(StandardCharsets.UTF_8)
