@@ -29,7 +29,7 @@ class Application(
     userConfig.folderList
         .asSequence()
         .map(Path::of)
-        .flatMap({ path -> fileSystem.listRecursively(path) })
+        .flatMap({ path -> fileSystem.listRecursively(path).asSequence() })
         .forEach { logger.info("{}", it) }
   }
 }
