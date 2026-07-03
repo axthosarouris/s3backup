@@ -1,23 +1,29 @@
 package io.github.axthosarouris.s3backup.core
 
+import com.github.awsjavakit.misc.paths.UnixPath
 import io.github.axthosarouris.localfilelisting.FileSystem
+import java.io.InputStream
 import java.nio.file.Path
 import org.slf4j.LoggerFactory
 
 class Application(
     private val userConfig: UserConfiguration,
     private val fileSystem: FileSystem,
+    private val cloudStorage: CloudStorage,
 ) {
   companion object {
     fun create(
         userConfiguration: UserConfiguration,
         fileSystem: FileSystem,
-    ): Application = Application(userConfiguration, fileSystem)
+        cloudStorage: CloudStorage,
+    ): Application = Application(userConfiguration, fileSystem, cloudStorage)
 
     fun create(
         configLocation: Path,
         fileSystem: FileSystem,
-    ): Application = Application(UserConfiguration.fromFile(configLocation), fileSystem)
+        cloudStorage: CloudStorage,
+    ): Application =
+        Application(UserConfiguration.fromFile(configLocation), fileSystem, cloudStorage)
   }
 
   private val logger = LoggerFactory.getLogger(Application::class.java)
@@ -30,6 +36,11 @@ class Application(
         .asSequence()
         .map(Path::of)
         .flatMap({ path -> fileSystem.listRecursively(path).asSequence() })
-        .forEach { logger.info("{}", it) }
+        .forEach { path -> cloudStorage.uploadFile(path, applyFileActions(path)) }
+  }
+
+  private fun applyFileActions(path: UnixPath): InputStream {
+    logger.info("{}", path)
+    return fileSystem.readFile(path)
   }
 }
