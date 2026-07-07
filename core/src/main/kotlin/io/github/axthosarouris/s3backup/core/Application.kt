@@ -36,7 +36,7 @@ class Application(
         .asSequence()
         .map(Path::of)
         .flatMap({ path -> fileSystem.listRecursively(path).asSequence() })
-        .forEach { path -> cloudStorage.uploadFile(path, applyFileActions(path)) }
+        .forEach { path -> applyFileActions(path).use { stream-> cloudStorage.uploadFile(path, stream) } }
   }
 
   private fun applyFileActions(path: UnixPath): InputStream {
