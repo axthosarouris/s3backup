@@ -40,7 +40,7 @@ class Application(
   }
 
   private fun applyFileActions(path: UnixPath): InputStream {
-    logger.info("{}", path)
+    logger.info("{}", path.toPath())
     return fileSystem.readFile(path)
   }
 }
