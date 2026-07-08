@@ -1,8 +1,6 @@
 package io.github.axthosarouris.s3backup.core
 
-import com.github.awsjavakit.misc.paths.UnixPath
 import io.github.axthosarouris.localfilelisting.FileSystem
-import java.io.InputStream
 import java.nio.file.Path
 import org.slf4j.LoggerFactory
 
@@ -36,11 +34,9 @@ class Application(
         .asSequence()
         .map(Path::of)
         .flatMap({ path -> fileSystem.listRecursively(path).asSequence() })
-        .forEach { path -> applyFileActions(path).use { stream-> cloudStorage.uploadFile(path, stream) } }
-  }
-
-  private fun applyFileActions(path: UnixPath): InputStream {
-    logger.info("{}", path.toPath())
-    return fileSystem.readFile(path)
+        .onEach { logger.info("{}", it.toPath()) }
+        .forEach { path ->
+          fileSystem.readFile(path).use { stream -> cloudStorage.uploadFile(path, stream) }
+        }
   }
 }
