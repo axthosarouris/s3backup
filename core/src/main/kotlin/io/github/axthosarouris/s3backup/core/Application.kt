@@ -7,17 +7,21 @@ import org.slf4j.LoggerFactory
 class Application(
     private val userConfig: UserConfiguration,
     private val fileSystem: FileSystem,
+    private val cloudStorage: CloudStorage,
 ) {
   companion object {
     fun create(
         userConfiguration: UserConfiguration,
         fileSystem: FileSystem,
-    ): Application = Application(userConfiguration, fileSystem)
+        cloudStorage: CloudStorage,
+    ): Application = Application(userConfiguration, fileSystem, cloudStorage)
 
     fun create(
         configLocation: Path,
         fileSystem: FileSystem,
-    ): Application = Application(UserConfiguration.fromFile(configLocation), fileSystem)
+        cloudStorage: CloudStorage,
+    ): Application =
+        Application(UserConfiguration.fromFile(configLocation), fileSystem, cloudStorage)
   }
 
   private val logger = LoggerFactory.getLogger(Application::class.java)
@@ -29,7 +33,10 @@ class Application(
     userConfig.folderList
         .asSequence()
         .map(Path::of)
-        .flatMap({ path -> fileSystem.listRecursively(path) })
-        .forEach { logger.info("{}", it) }
+        .flatMap({ path -> fileSystem.listRecursively(path).asSequence() })
+        .onEach { logger.info("{}", it.toPath()) }
+        .forEach { path ->
+          fileSystem.readFile(path).use { stream -> cloudStorage.uploadFile(path, stream) }
+        }
   }
 }

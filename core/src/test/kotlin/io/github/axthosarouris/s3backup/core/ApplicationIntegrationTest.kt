@@ -37,10 +37,10 @@ class ApplicationIntegrationTest {
   }
 
   private fun addSomeContent(file: Path) {
-    Files.newBufferedWriter(file).use { writer -> extracted(writer) }
+    Files.newBufferedWriter(file).use { writer -> writeRandomString(writer) }
   }
 
-  private fun extracted(writer: BufferedWriter) {
+  private fun writeRandomString(writer: BufferedWriter) {
     writer.write(randomString())
     writer.newLine()
     writer.flush()
