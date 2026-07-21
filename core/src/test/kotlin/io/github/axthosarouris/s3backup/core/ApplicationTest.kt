@@ -7,7 +7,6 @@ import io.github.axthosarouris.s3backup.core.testutils.Content
 import io.github.axthosarouris.s3backup.core.testutils.FakeCloudStorage
 import io.github.axthosarouris.s3backup.core.testutils.FakeFileSystem
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainAllInAnyOrder
 import io.kotest.matchers.string.shouldContain
 import java.nio.file.Path
